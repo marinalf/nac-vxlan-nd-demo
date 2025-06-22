@@ -1,0 +1,60 @@
+---
+vxlan:
+  topology:
+    switches:
+      - name: spine1
+        serial_number: 907RJ9UZBRX
+        role: spine
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.50
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
+      - name: spine2
+        serial_number: 9GTSR8FAJ4B
+        role: spine
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.60
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
+      - name: leaf1
+        serial_number: 9I4HAKZ3HFM
+        role: leaf
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.51
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
+      - name: leaf2
+        serial_number: 9Z76OYFL2RD
+        role: leaf
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.52
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
+      - name: leaf3
+        serial_number: 99IYZRXW7AZ
+        role: leaf
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.53
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
+      - name: leaf4
+        serial_number: 9UHFGCF99CK
+        role: leaf
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.54
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
+      - name: Superspine1
+        serial_number: 9HWVPTGH3C0
+        role: super_spine
+        management:
+          default_gateway_v4: 198.18.128.1
+          management_ipv4_address: 198.18.133.70
+        routing_loopback_id: 0
+        vtep_loopback_id: 1
