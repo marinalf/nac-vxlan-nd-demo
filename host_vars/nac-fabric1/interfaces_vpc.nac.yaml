@@ -1,0 +1,33 @@
+---
+vxlan:
+  topology:
+    switches:
+      - name: leaf1
+        interfaces:
+          - name: port-channel10
+            mode: access
+            enabled: true
+            pc_mode: active
+            vpc_id: 10
+            members:
+              - eth1/5
+            mtu: jumbo
+            speed: auto
+            access_vlan: 2301
+            spanning_tree_portfast: true
+            enable_bpdu_guard: true
+      - name: leaf2
+        interfaces:
+          - name: port-channel10
+            mode: access
+            enabled: true
+            pc_mode: active
+            vpc_id: 10
+            members:
+              - eth1/5
+            mtu: jumbo
+            speed: auto
+            access_vlan: 2301
+            spanning_tree_portfast: true
+            enable_bpdu_guard: true
+

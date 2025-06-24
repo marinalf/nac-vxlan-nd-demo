@@ -6,3 +6,4 @@ macaddress
 netaddr
 packaging==24.1
 requests
+jmespath==1.0.1

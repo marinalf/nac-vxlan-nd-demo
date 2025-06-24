@@ -31,8 +31,8 @@ vxlan:
     network_attach_groups:
       - name: all
         switches:
-          - { hostname: leaf1, ports: [Ethernet1/5] }
-          - { hostname: leaf2, ports: [Ethernet1/5] }
+          - { hostname: leaf1, ports: [port-channel10] }
+          - { hostname: leaf2, ports: [port-channel10] }
       - name: leaf3
         switches:
           - { hostname: leaf3, ports: [] }

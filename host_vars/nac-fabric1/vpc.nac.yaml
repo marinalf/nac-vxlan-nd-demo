@@ -1,0 +1,17 @@
+---
+vxlan:
+  global:
+    bgp_asn: "65001"
+    vpc:
+      peer_link_vlan: 3600
+      peer_keep_alive: management
+      auto_recovery_time: 240
+      delay_restore_time: 150
+      peer_link_port_channel_id: 500
+      advertise_pip: true
+      domain_id_range: 1-100
+  topology:
+    vpc_peers:
+      - peer1: leaf1
+        peer2: leaf2
+        fabric_peering: true

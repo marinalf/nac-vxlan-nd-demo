@@ -5,4 +5,4 @@ all:
     nd:
       hosts:
         nac-fabric1:
-          ansible_host: 198.18.133.100
+          ansible_host: 198.18.133.101
