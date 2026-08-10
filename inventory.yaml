@@ -4,5 +4,5 @@ all:
   children:
     nd:
       hosts:
-        nac-fabric1:
+        vxlan-fabric:
           ansible_host: 198.18.133.101

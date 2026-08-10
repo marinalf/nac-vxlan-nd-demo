@@ -1,32 +1,9 @@
-#                 +------+ 
-#                 |      |  
-#                 |  SS  |          
-#                 |      |  
-#                 +------+    
-##                |      |              
-#            +------+  +------+
-#            |      |  |      |
-#            |  S1  |  |  S2  |         
-#            |      |  |      |
-#            +------+  +------+
-#              |  |      |  |
-#    +---------+  |      |  +----------+
-#    | +-------+--+------+--+-------+  |
-#    | |       |  |      |  |       |  |
-#  +----+     +----+    +----+     +----+
-#  |    |     |    |    |    |     |    |
-#  | L1 |     | L2 |    | L3 |     | L4 | 
-#  |    |     |    |    |    |     |    |
-#  +----+     +----+    +----+     +----+
-#
-# This file defines the topology of a 3-tier spine and leaf network for VXLAN EVPN
 ---
-
 vxlan:
   topology:
     switches:
       - name: spine1
-        serial_number: 907RJ9UZBRX
+        serial_number: 9SPINE0001A
         role: spine
         management:
           default_gateway_v4: 198.18.128.1
@@ -34,7 +11,7 @@ vxlan:
         routing_loopback_id: 0
         vtep_loopback_id: 1
       - name: spine2
-        serial_number: 9GTSR8FAJ4B
+        serial_number: 9SPINE0002B
         role: spine
         management:
           default_gateway_v4: 198.18.128.1
@@ -42,7 +19,7 @@ vxlan:
         routing_loopback_id: 0
         vtep_loopback_id: 1
       - name: leaf1
-        serial_number: 9I4HAKZ3HFM
+        serial_number: 9LEAF000001
         role: leaf
         management:
           default_gateway_v4: 198.18.128.1
@@ -50,7 +27,7 @@ vxlan:
         routing_loopback_id: 0
         vtep_loopback_id: 1
       - name: leaf2
-        serial_number: 9Z76OYFL2RD
+        serial_number: 9LEAF000002
         role: leaf
         management:
           default_gateway_v4: 198.18.128.1
@@ -58,7 +35,7 @@ vxlan:
         routing_loopback_id: 0
         vtep_loopback_id: 1
       - name: leaf3
-        serial_number: 99IYZRXW7AZ
+        serial_number: 9LEAF000003
         role: leaf
         management:
           default_gateway_v4: 198.18.128.1
@@ -66,18 +43,10 @@ vxlan:
         routing_loopback_id: 0
         vtep_loopback_id: 1
       - name: leaf4
-        serial_number: 9UHFGCF99CK
+        serial_number: 9LEAF000004
         role: leaf
         management:
           default_gateway_v4: 198.18.128.1
           management_ipv4_address: 198.18.133.54
-        routing_loopback_id: 0
-        vtep_loopback_id: 1
-      - name: Superspine1
-        serial_number: 9HWVPTGH3C0
-        role: super_spine
-        management:
-          default_gateway_v4: 198.18.128.1
-          management_ipv4_address: 198.18.133.70
         routing_loopback_id: 0
         vtep_loopback_id: 1

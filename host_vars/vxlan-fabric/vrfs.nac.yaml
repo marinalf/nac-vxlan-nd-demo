@@ -1,0 +1,25 @@
+---
+vxlan:
+  overlay:
+    vrfs:
+      - name: red
+        vrf_id: 50000
+        vlan_id: 2000
+        vrf_attach_group: all
+        disable_rt_auto: true
+        export_evpn_rt: "65000:50000"
+        import_evpn_rt: "65000:50000"
+      - name: blue
+        vrf_id: 50001
+        vlan_id: 2001
+        vrf_attach_group: all
+        disable_rt_auto: true
+        export_evpn_rt: "65000:50001"
+        import_evpn_rt: "65000:50001"
+    vrf_attach_groups:
+      - name: all
+        switches:
+          - { hostname: leaf1 }
+          - { hostname: leaf2 }
+          - { hostname: leaf3 }
+          - { hostname: leaf4 }

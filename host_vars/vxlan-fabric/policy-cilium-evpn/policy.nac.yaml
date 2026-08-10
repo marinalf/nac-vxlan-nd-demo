@@ -1,0 +1,192 @@
+# per-leaf BGP freeform for the overlay session toward the kind cluster node's own loopback (Cilium's EVPN/Private Networks peer), plus the next-hop rewrites towards leaf and spines.
+---
+vxlan:
+  policy:
+    policies:
+      - name: leaf1_bgp_freeform
+        template_name: switch_freeform
+        template_vars:
+          CONF: |2-
+            route-map add-paths permit 10
+              set path-selection all advertise
+            ip as-path access-list k8s-vxlan seq 5 permit "^65001$"
+            route-map leaf-to-spine-next-hop permit 10
+              match as-path k8s-vxlan
+              set ip next-hop 10.3.0.3
+            route-map leaf-to-spine-next-hop permit 1000
+            route-map leaf-to-cilium-next-hop permit 10
+              set ip next-hop 10.3.0.3
+            router bgp 65000
+              address-family l2vpn evpn
+                maximum-paths 64
+                additional-paths send
+                additional-paths receive
+                additional-paths selection route-map add-paths
+              neighbor 10.2.0.2
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor 10.2.0.4
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor Ethernet1/6
+                remote-as 65001
+                log-neighbor-changes
+                address-family ipv4 unicast
+                address-family ipv6 unicast
+              neighbor 100.64.10.1
+                remote-as 65001
+                update-source loopback0
+                ebgp-multihop 5
+                address-family l2vpn evpn
+                  send-community
+                  send-community extended
+                  rewrite-evpn-rt-asn
+                  route-map leaf-to-cilium-next-hop out
+
+      - name: leaf2_bgp_freeform
+        template_name: switch_freeform
+        template_vars:
+          CONF: |2-
+            route-map add-paths permit 10
+              set path-selection all advertise
+            ip as-path access-list k8s-vxlan seq 5 permit "^65001$"
+            route-map leaf-to-spine-next-hop permit 10
+              match as-path k8s-vxlan
+              set ip next-hop 10.3.0.2
+            route-map leaf-to-spine-next-hop permit 1000
+            route-map leaf-to-cilium-next-hop permit 10
+              set ip next-hop 10.3.0.2
+            router bgp 65000
+              address-family l2vpn evpn
+                maximum-paths 64
+                additional-paths send
+                additional-paths receive
+                additional-paths selection route-map add-paths
+              neighbor 10.2.0.2
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor 10.2.0.4
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor Ethernet1/6
+                remote-as 65001
+                log-neighbor-changes
+                address-family ipv4 unicast
+                address-family ipv6 unicast
+              neighbor 100.64.10.2
+                remote-as 65001
+                update-source loopback0
+                ebgp-multihop 5
+                address-family l2vpn evpn
+                  send-community
+                  send-community extended
+                  rewrite-evpn-rt-asn
+                  route-map leaf-to-cilium-next-hop out
+
+      - name: leaf3_bgp_freeform
+        template_name: switch_freeform
+        template_vars:
+          CONF: |2-
+            route-map add-paths permit 10
+              set path-selection all advertise
+            ip as-path access-list k8s-vxlan seq 5 permit "^65001$"
+            route-map leaf-to-spine-next-hop permit 10
+              match as-path k8s-vxlan
+              set ip next-hop 10.3.0.4
+            route-map leaf-to-spine-next-hop permit 1000
+            route-map leaf-to-cilium-next-hop permit 10
+              set ip next-hop 10.3.0.4
+            router bgp 65000
+              address-family l2vpn evpn
+                maximum-paths 64
+                additional-paths send
+                additional-paths receive
+                additional-paths selection route-map add-paths
+              neighbor 10.2.0.2
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor 10.2.0.4
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor Ethernet1/6
+                remote-as 65001
+                log-neighbor-changes
+                address-family ipv4 unicast
+                address-family ipv6 unicast
+              neighbor 100.64.10.3
+                remote-as 65001
+                update-source loopback0
+                ebgp-multihop 5
+                address-family l2vpn evpn
+                  send-community
+                  send-community extended
+                  rewrite-evpn-rt-asn
+                  route-map leaf-to-cilium-next-hop out
+
+      - name: leaf4_bgp_freeform
+        template_name: switch_freeform
+        template_vars:
+          CONF: |2-
+            route-map add-paths permit 10
+              set path-selection all advertise
+            ip as-path access-list k8s-vxlan seq 5 permit "^65001$"
+            route-map leaf-to-spine-next-hop permit 10
+              match as-path k8s-vxlan
+              set ip next-hop 10.3.0.1
+            route-map leaf-to-spine-next-hop permit 1000
+            route-map leaf-to-cilium-next-hop permit 10
+              set ip next-hop 10.3.0.1
+            router bgp 65000
+              address-family l2vpn evpn
+                maximum-paths 64
+                additional-paths send
+                additional-paths receive
+                additional-paths selection route-map add-paths
+              neighbor 10.2.0.2
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor 10.2.0.4
+                address-family l2vpn evpn
+                  route-map leaf-to-spine-next-hop out
+              neighbor Ethernet1/6
+                remote-as 65001
+                log-neighbor-changes
+                address-family ipv4 unicast
+                address-family ipv6 unicast
+              neighbor 100.64.10.4
+                remote-as 65001
+                update-source loopback0
+                ebgp-multihop 5
+                address-family l2vpn evpn
+                  send-community
+                  send-community extended
+                  rewrite-evpn-rt-asn
+                  route-map leaf-to-cilium-next-hop out
+
+    groups:
+      - name: leaf1_group
+        priority: 500
+        policies:
+          - name: leaf1_bgp_freeform
+      - name: leaf2_group
+        priority: 500
+        policies:
+          - name: leaf2_bgp_freeform
+      - name: leaf3_group
+        priority: 500
+        policies:
+          - name: leaf3_bgp_freeform
+      - name: leaf4_group
+        priority: 500
+        policies:
+          - name: leaf4_bgp_freeform
+
+    switches:
+      - name: leaf1
+        groups: [leaf1_group]
+      - name: leaf2
+        groups: [leaf2_group]
+      - name: leaf3
+        groups: [leaf3_group]
+      - name: leaf4
+        groups: [leaf4_group]

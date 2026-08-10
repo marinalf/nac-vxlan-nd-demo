@@ -1,0 +1,12 @@
+---
+vxlan:
+  fabric:
+    name: vxlan-fabric
+    type: eBGP_VXLAN
+  global:
+    ebgp:
+      spine_bgp_asn: "65010"
+      bgp_asn_mode: Same-Tier-AS
+      leaf_bgp_asn: "65000"
+      anycast_gateway_mac: 12:34:56:78:90:00
+      greenfield_cleanup: Enable

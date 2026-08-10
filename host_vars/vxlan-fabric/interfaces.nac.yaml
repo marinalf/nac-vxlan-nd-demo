@@ -1,0 +1,18 @@
+---
+vxlan:
+  topology:
+    switches:
+      - name: leaf1
+        interfaces:
+          - name: eth1/7
+            mode: access
+            enabled: true
+            access_vlan: 100
+            description: "Host-Red"
+      - name: leaf2
+        interfaces:
+          - name: eth1/7
+            mode: access
+            enabled: true
+            access_vlan: 200
+            description: "Host-Blue"

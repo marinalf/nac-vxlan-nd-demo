@@ -1,0 +1,40 @@
+# Ethernet1/6 on each leaf is the BGP-unnumbered link toward the kind cluster node behind it, running Cilium CNI with EVPN/Private Networks. 
+vxlan:
+  topology:
+    switches:
+      - name: leaf1
+        interfaces:
+          - name: Ethernet1/6
+            mode: routed
+            freeform_config: |
+              medium p2p
+              ip forward
+              ipv6 address use-link-local-only
+              ipv6 link-local use-bia
+      - name: leaf2
+        interfaces:
+          - name: Ethernet1/6
+            mode: routed
+            freeform_config: |
+              medium p2p
+              ip forward
+              ipv6 address use-link-local-only
+              ipv6 link-local use-bia
+      - name: leaf3
+        interfaces:
+          - name: Ethernet1/6
+            mode: routed
+            freeform_config: |
+              medium p2p
+              ip forward
+              ipv6 address use-link-local-only
+              ipv6 link-local use-bia
+      - name: leaf4
+        interfaces:
+          - name: Ethernet1/6
+            mode: routed
+            freeform_config: |
+              medium p2p
+              ip forward
+              ipv6 address use-link-local-only
+              ipv6 link-local use-bia

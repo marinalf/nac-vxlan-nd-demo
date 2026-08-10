@@ -1,0 +1,25 @@
+---
+vxlan:
+  overlay:
+    networks:
+      - name: Net-Red
+        vrf_name: red
+        net_id: 30000
+        vlan_id: 100
+        vlan_name: Net-Red_vlan100
+        gw_ip_address: "10.0.100.1/24"
+        network_attach_group: all
+      - name: Net-Blue
+        vrf_name: blue
+        net_id: 30001
+        vlan_id: 200
+        vlan_name: Net-Blue_vlan200
+        gw_ip_address: "10.0.200.1/24"
+        network_attach_group: all
+    network_attach_groups:
+      - name: all
+        switches:
+          - { hostname: leaf1, ports: [] }
+          - { hostname: leaf2, ports: [] }
+          - { hostname: leaf3, ports: [] }
+          - { hostname: leaf4, ports: [] }

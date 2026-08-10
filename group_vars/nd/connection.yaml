@@ -1,5 +1,5 @@
 ---
-# Connection Parameters for 'Nexus Dashboaard' inventory group
+# Connection Parameters for 'Nexus Dashboard' inventory group
 #
 # Controller Credentials
 ansible_connection: ansible.netcommon.httpapi
@@ -7,7 +7,6 @@ ansible_network_os: cisco.dcnm.dcnm
 ansible_httpapi_port: 443
 ansible_httpapi_use_ssl: true
 ansible_httpapi_validate_certs: false
-# ansible_httpapi_login_domain: "{{ lookup('env', 'ND_DOMAIN') }}"
 # ND API Credentials
 ansible_user: "{{ lookup('env', 'nd_username') }}"
 ansible_password: "{{ lookup('env', 'nd_password') }}"
