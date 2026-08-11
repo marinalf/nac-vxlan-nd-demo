@@ -4,6 +4,10 @@ Builds a NX-OS EVPN Fabric (`vxlan-fabric`: 2 spines, 4 leaves, eBGP_VXLAN, Same
 
 The base fabric (`host_vars/vxlan-fabric/*.nac.yaml`) preconfigures interfaces for testing endpoints for leaf 1 and 2 on `Ethernet1/7`. `host_vars/vxlan-fabric/policy-cilium-evpn/` is a separate, self-contained example layering on `Ethernet1/6` and the BGP freeform needed to peer the fabric with a kind cluster running Cilium CNI (EVPN/Private Networks).
 
+## CML Topology (Optional)
+
+[`cml-topology/`](cml-topology/) builds the underlying CML lab itself (switches, kind-host, endpoints, links) from code via the MCP server from [`cml-mcp`](https://github.com/xorrkaz/cml-mcp). Optional, and a separate/complementary piece to this NaC config, only needed if you also want to automate the CML layer this fabric config runs against.
+
 ## Prerequisites
 
 ```bash

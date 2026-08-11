@@ -1,0 +1,77 @@
+#cloud-config
+hostname: kind-node
+ssh_pwauth: true
+
+users:
+  - name: kindops
+    gecos: Kind Ops User
+    groups: sudo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: false
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAA... your-key-here
+
+chpasswd:
+  users:
+    - name: kindops
+      password: '<your-host-password-here>'
+      type: text
+  expire: false
+
+write_files:
+  - path: /etc/netplan/60-static.yaml
+    permissions: '0600'
+    content: |
+      network:
+        version: 2
+        ethernets:
+          ens2:
+            dhcp4: false
+            addresses: [198.18.133.5/18]
+            routes:
+              - to: default
+                via: 198.18.128.1
+            nameservers:
+              addresses: [8.8.8.8]
+  - path: /etc/netplan/61-fabric-interfaces.yaml
+    permissions: '0644'
+    content: |
+      network:
+        version: 2
+        ethernets:
+          ens3:
+            dhcp4: false
+            optional: true
+          ens4:
+            dhcp4: false
+            optional: true
+          ens5:
+            dhcp4: false
+            optional: true
+          ens6:
+            dhcp4: false
+            optional: true
+
+runcmd:
+  - rm -f /etc/netplan/50-cloud-init.yaml
+  - netplan apply
+  - sleep 10
+  - |
+    for i in 1 2 3 4 5; do
+      curl -fsSL https://get.docker.com -o /tmp/get-docker.sh && break
+      sleep 10
+    done
+  - sh /tmp/get-docker.sh
+  - usermod -aG docker kindops
+  - systemctl enable --now docker
+  - curl -Lo /usr/local/bin/kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+  - chmod +x /usr/local/bin/kind
+  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  - curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+  - chmod +x /tmp/get_helm.sh
+  - /tmp/get_helm.sh
+  - curl -fsSL --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
+  - tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+  - rm -f cilium-linux-amd64.tar.gz

@@ -1,0 +1,53 @@
+## template: jinja
+#cloud-config
+
+{% set hostname = 'Host-Blue' %}
+{% set addresses = '10.0.200.10/24' %}
+{% set gateway4 = '10.0.200.1' %}
+
+hostname: {{ hostname }}
+manage_etc_hosts: True
+system_info:
+  default_user:
+    name: cisco
+password: <your-host-password-here>
+chpasswd: { expire: False }
+ssh_pwauth: True
+ssh_authorized_keys:
+  - your-ssh-pubkey-line-goes-here
+
+write_files:
+  - path: /etc/netplan/50-cloud-init.yaml
+    permissions: '0644'
+    content: |
+      network:
+        version: 2
+        ethernets:
+          ens2:
+            dhcp4: false
+            addresses: [{{ addresses }}]
+            gateway4: {{ gateway4 }}
+
+  - path: /home/cisco/startup.sh
+    permissions: '755'
+    content: |
+      #!/bin/sh
+      sudo ethtool -s ens2 speed 1000 duplex full
+      sudo netplan generate
+      sudo netplan apply
+      sudo rm -rf /etc/hosts
+      sudo touch /etc/hosts
+      echo "127.0.0.1 {{ hostname }}" | sudo tee -a /etc/hosts
+      echo "{{ addresses }} {{ hostname }}" | sudo tee -a /etc/hosts
+      sudo lldpcli configure system hostname {{ hostname }}
+      sudo lldpcli update
+      stty cols 187 rows 21
+
+runcmd:
+  - sudo /home/cisco/startup.sh
+  - [
+      su,
+      cisco,
+      -c,
+      cat <(crontab -l 2>/dev/null) <(echo -e "@reboot /home/cisco/startup.sh") | crontab -,
+    ]
