@@ -17,6 +17,8 @@ cp secrets.sh.example secrets.sh   # fill in real ND/switch credentials
 source secrets.sh
 ```
 
+**Gather each switch's serial number first.** Update `topology_switches.nac.yaml` and `fix_proxy_arp.yml` with the current values before running the playbook.
+
 ## Running the Playbook
 
 **Option 1 - full deploy, no tags:**
@@ -27,13 +29,19 @@ ansible-playbook -i inventory.yaml vxlan.yaml
 
 Builds and deploys everything in **one pass**: fabric, switches, VRFs, networks, interfaces, and the Cilium-facing policy config (`policy-cilium-evpn/`). 
 
+**IMPORTANT:** for the freeform policy, adjust the loopback address to match the allocated IPs during fabric build (if needed) and re-deploy. 
+
+```bash
+ansible-playbook -i inventory.yaml vxlan.yaml --tags cr_manage_policy,role_deploy
+```
+
 **Option 2 - selective/staged deploy via tags:**
 
 ```bash
 ansible-playbook -i inventory.yaml vxlan.yaml --tags cr_manage_fabric,cr_manage_switches
 ```
 
-Builds only the specific resources named by the tags. **Important:** any `cr_manage_*` tag only creates/stages the resource on Nexus Dashboard, it does not push config to the switches. A separate `role_deploy` pass is required to actually deploy:
+Builds only the specific resources named by the tags. Any `cr_manage_*` tag only creates/stages the resource on Nexus Dashboard, it does not push config to the switches. A separate `role_deploy` pass is required to deploy:
 
 ```bash
 ansible-playbook -i inventory.yaml vxlan.yaml --tags role_deploy
@@ -51,9 +59,13 @@ cr_manage_vrfs
 cr_manage_networks
 cr_manage_interfaces
 role_deploy           # day 1 - overlay
+cr_manage_policy
+role_deploy           # day 2 - Cilium-facing BGP freeform
 ```
 
 In this example (not using vPC peering), the interfaces config must come after VRFs/networks. The `eth1/7` access ports reference VLANs that only exist once the network objects are created.
+
+**IMPORTANT:** Before running `cr_manage_policy`, double-check the loopback addresses on `policy-cilium-evpn/policy.nac.yaml`, match with swiches allocation, and update accordingly.
 
 ### Tags
 
